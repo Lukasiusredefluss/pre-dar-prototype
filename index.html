@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#171611" />
+    <meta name="description" content="PRE CHA DAR – absurde Wetten, Challenges und Dares für Freundesgruppen." />
+    <title>PRE CHA DAR</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <button class="group-switch" id="groupButton" aria-label="Gruppe anzeigen">
+          <span class="group-mark">DI</span>
+          <span><small>GRUPPE</small><strong>Die Idioten</strong></span>
+          <span class="chevron">⌄</span>
+        </button>
+        <button class="avatar" id="profileButton" aria-label="Profil öffnen">LS</button>
+      </header>
+
+      <main>
+        <section class="view active" id="playView" aria-labelledby="playTitle">
+          <div class="hero">
+            <p class="eyebrow">MITTWOCH, 16. SEPTEMBER</p>
+            <h1 id="playTitle">Was wird heute<br /><em>legendär?</em></h1>
+            <p class="hero-copy">Behaupten. Herausfordern. Bereuen.</p>
+          </div>
+
+          <div class="stats" aria-label="Gruppenstatistik">
+            <div><strong id="activeCount">4</strong><span>aktiv</span></div>
+            <div><strong>27</strong><span>Momente</span></div>
+            <div><strong>6</strong><span>Freunde</span></div>
+          </div>
+
+          <div class="section-heading">
+            <h2>Läuft gerade</h2>
+            <button class="text-button" id="randomButton">Überrasch mich</button>
+          </div>
+          <div class="filters" id="filters" role="group" aria-label="Wetten filtern">
+            <button class="filter active" data-filter="ALL">Alle</button>
+            <button class="filter" data-filter="PRE"><span class="dot pre"></span>PRE</button>
+            <button class="filter" data-filter="CHA"><span class="dot cha"></span>CHA</button>
+            <button class="filter" data-filter="DAR"><span class="dot dar"></span>DAR</button>
+          </div>
+          <div class="card-list" id="activeList"></div>
+        </section>
+
+        <section class="view" id="historyView" aria-labelledby="historyTitle">
+          <div class="hero compact">
+            <p class="eyebrow">EURE GRUPPENLORE</p>
+            <h1 id="historyTitle">Die <em>Chronik.</em></h1>
+            <p class="hero-copy">Kein Ruhmesblatt. Aber eures.</p>
+          </div>
+          <div class="hall-card">
+            <span class="hall-icon">♛</span>
+            <div><small>GRÖSSTES GROSSMAUL</small><strong>Ben</strong><p>8 verlorene Ansagen</p></div>
+            <span class="hall-score">8×</span>
+          </div>
+          <div class="section-heading"><h2>Erledigt & verewigt</h2></div>
+          <div class="card-list" id="historyList"></div>
+        </section>
+
+        <section class="view" id="groupView" aria-labelledby="groupTitle">
+          <div class="hero compact">
+            <p class="eyebrow">6 CHAOTEN · SEIT 2026</p>
+            <h1 id="groupTitle">Die <em>Idioten.</em></h1>
+            <p class="hero-copy">Freundschaft, aber mit Beweislage.</p>
+          </div>
+          <button class="invite-card" id="shareButton">
+            <span class="invite-icon">↗</span>
+            <span><strong>Freunde einladen</strong><small>Testlink teilen</small></span>
+            <span>›</span>
+          </button>
+          <div class="section-heading"><h2>Die Verdächtigen</h2></div>
+          <div class="people-grid" id="peopleGrid"></div>
+          <div class="prototype-note">
+            <strong>Prototyp-Modus</strong>
+            <p>Alle Änderungen werden nur auf diesem Gerät gespeichert. Deine Freunde sehen ihre eigene Testversion.</p>
+            <button id="resetButton">Testdaten zurücksetzen</button>
+          </div>
+        </section>
+      </main>
+
+      <button class="fab" id="createButton" aria-label="Neue Wette erstellen"><span>+</span></button>
+
+      <nav class="bottom-nav" aria-label="Hauptnavigation">
+        <button class="nav-item active" data-view="playView"><span>⌁</span>Spiele</button>
+        <button class="nav-item" data-view="historyView"><span>◷</span>Chronik</button>
+        <span class="nav-gap"></span>
+        <button class="nav-item" data-view="groupView"><span>♟</span>Gruppe</button>
+        <button class="nav-item" id="moreButton"><span>•••</span>Mehr</button>
+      </nav>
+    </div>
+
+    <div class="modal-backdrop" id="createModal" aria-hidden="true">
+      <section class="sheet create-sheet" role="dialog" aria-modal="true" aria-labelledby="createTitle">
+        <div class="sheet-handle"></div>
+        <button class="close-button" data-close="createModal" aria-label="Schließen">×</button>
+        <div id="typeStep">
+          <p class="eyebrow">NEUES KAPITEL</p>
+          <h2 id="createTitle">Was habt ihr vor?</h2>
+          <p class="sheet-copy">Wähle, was am besten zu eurer Idee passt.</p>
+          <div class="type-options">
+            <button class="type-option pre-option" data-type="PRE"><span>PRE</span><div><strong>Prediction</strong><small>Was wird passieren?</small></div><b>→</b></button>
+            <button class="type-option cha-option" data-type="CHA"><span>CHA</span><div><strong>Challenge</strong><small>Wer schafft es wirklich?</small></div><b>→</b></button>
+            <button class="type-option dar-option" data-type="DAR"><span>DAR</span><div><strong>Dare</strong><small>Wer muss es ausbaden?</small></div><b>→</b></button>
+          </div>
+        </div>
+        <form id="betForm" class="hidden">
+          <button type="button" class="back-button" id="backToTypes">← Zurück</button>
+          <div class="form-type" id="formType">PRE</div>
+          <h2 id="formHeading">Neue Prediction</h2>
+          <label>Die große Frage
+            <textarea id="betTitle" maxlength="140" required placeholder="Kommt Ben Freitag wieder zu spät?"></textarea>
+          </label>
+          <label id="targetLabel">Wen betrifft's?
+            <select id="betTarget"></select>
+          </label>
+          <label>Was steht auf dem Spiel?
+            <input id="betStake" maxlength="100" required placeholder="Verlierer bringt Snacks mit" />
+          </label>
+          <label>Deadline
+            <input id="betDeadline" type="date" required />
+          </label>
+          <button class="primary-button" type="submit">Ab dafür <span>→</span></button>
+        </form>
+      </section>
+    </div>
+
+    <div class="modal-backdrop" id="detailModal" aria-hidden="true">
+      <section class="sheet detail-sheet" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
+        <div class="sheet-handle"></div>
+        <button class="close-button" data-close="detailModal" aria-label="Schließen">×</button>
+        <div id="detailContent"></div>
+      </section>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="app.js"></script>
+  </body>
+</html>
