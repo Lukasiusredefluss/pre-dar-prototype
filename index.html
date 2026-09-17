@@ -4,8 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#171611" />
-    <meta name="description" content="PRE CHA DAR – absurde Wetten, Challenges und Dares für Freundesgruppen." />
-    <title>PRE CHA DAR</title>
+    <meta name="description" content="PRE DAR – Predictions und Dares für Freundesgruppen." />
+    <title>PRE DAR</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet" />
@@ -25,9 +25,22 @@
       <main>
         <section class="view active" id="playView" aria-labelledby="playTitle">
           <div class="hero">
-            <p class="eyebrow">MITTWOCH, 16. SEPTEMBER</p>
-            <h1 id="playTitle">Was wird heute<br /><em>legendär?</em></h1>
-            <p class="hero-copy">Behaupten. Herausfordern. Bereuen.</p>
+            <p class="eyebrow">EURE GRUPPE · EURE REGELN</p>
+            <h1 id="playTitle">Was wird als Nächstes <em>legendär?</em></h1>
+            <p class="hero-copy">Tippt, was passiert – oder legt fest, wer etwas tun muss.</p>
+          </div>
+
+          <div class="mode-guide" aria-label="Spielarten erklärt">
+            <button class="guide-card prediction" data-quick-type="PRE">
+              <span class="guide-icon">?</span>
+              <span><small>PREDICTION</small><strong>Was passiert?</strong><em>Alle geben einen Tipp ab.</em></span>
+              <b>＋</b>
+            </button>
+            <button class="guide-card dare" data-quick-type="DAR">
+              <span class="guide-icon">!</span>
+              <span><small>DARE</small><strong>Wer muss ran?</strong><em>Eine Aufgabe mit Konsequenz.</em></span>
+              <b>＋</b>
+            </button>
           </div>
 
           <div class="stats" aria-label="Gruppenstatistik">
@@ -42,9 +55,8 @@
           </div>
           <div class="filters" id="filters" role="group" aria-label="Wetten filtern">
             <button class="filter active" data-filter="ALL">Alle</button>
-            <button class="filter" data-filter="PRE"><span class="dot pre"></span>PRE</button>
-            <button class="filter" data-filter="CHA"><span class="dot cha"></span>CHA</button>
-            <button class="filter" data-filter="DAR"><span class="dot dar"></span>DAR</button>
+            <button class="filter" data-filter="PRE"><span class="dot pre"></span>Predictions</button>
+            <button class="filter" data-filter="DAR"><span class="dot dar"></span>Dares</button>
           </div>
           <div class="card-list" id="activeList"></div>
         </section>
@@ -85,10 +97,10 @@
         </section>
       </main>
 
-      <button class="fab" id="createButton" aria-label="Neue Wette erstellen"><span>+</span></button>
+      <button class="fab" id="createButton" aria-label="Neues Spiel erstellen"><span>+</span><small>Neu</small></button>
 
       <nav class="bottom-nav" aria-label="Hauptnavigation">
-        <button class="nav-item active" data-view="playView"><span>⌁</span>Spiele</button>
+        <button class="nav-item active" data-view="playView"><span>⌁</span>Aktiv</button>
         <button class="nav-item" data-view="historyView"><span>◷</span>Chronik</button>
         <span class="nav-gap"></span>
         <button class="nav-item" data-view="groupView"><span>♟</span>Gruppe</button>
@@ -101,32 +113,32 @@
         <div class="sheet-handle"></div>
         <button class="close-button" data-close="createModal" aria-label="Schließen">×</button>
         <div id="typeStep">
-          <p class="eyebrow">NEUES KAPITEL</p>
-          <h2 id="createTitle">Was habt ihr vor?</h2>
-          <p class="sheet-copy">Wähle, was am besten zu eurer Idee passt.</p>
+          <p class="eyebrow">NEUES SPIEL</p>
+          <h2 id="createTitle">Was soll passieren?</h2>
+          <p class="sheet-copy">Wollt ihr etwas vorhersagen oder jemanden herausfordern?</p>
           <div class="type-options">
-            <button class="type-option pre-option" data-type="PRE"><span>PRE</span><div><strong>Prediction</strong><small>Was wird passieren?</small></div><b>→</b></button>
-            <button class="type-option cha-option" data-type="CHA"><span>CHA</span><div><strong>Challenge</strong><small>Wer schafft es wirklich?</small></div><b>→</b></button>
-            <button class="type-option dar-option" data-type="DAR"><span>DAR</span><div><strong>Dare</strong><small>Wer muss es ausbaden?</small></div><b>→</b></button>
+            <button class="type-option pre-option" data-type="PRE"><span>?</span><div><strong>Prediction</strong><small>Alle tippen, ob etwas passieren wird.</small><em>„Kommt Ben wieder zu spät?“</em></div><b>→</b></button>
+            <button class="type-option dar-option" data-type="DAR"><span>!</span><div><strong>Dare</strong><small>Jemand nimmt eine Aufgabe an.</small><em>„Verlierer singt Karaoke.“</em></div><b>→</b></button>
           </div>
         </div>
         <form id="betForm" class="hidden">
           <button type="button" class="back-button" id="backToTypes">← Zurück</button>
           <div class="form-type" id="formType">PRE</div>
           <h2 id="formHeading">Neue Prediction</h2>
-          <label>Die große Frage
+          <p class="form-helper" id="formHelper">Stellt eine Frage, die alle mit Ja oder Nein beantworten können.</p>
+          <label id="titleLabel">Was wollt ihr vorhersagen?
             <textarea id="betTitle" maxlength="140" required placeholder="Kommt Ben Freitag wieder zu spät?"></textarea>
           </label>
           <label id="targetLabel">Wen betrifft's?
             <select id="betTarget"></select>
           </label>
-          <label>Was steht auf dem Spiel?
+          <label id="stakeLabel">Was steht auf dem Spiel?
             <input id="betStake" maxlength="100" required placeholder="Verlierer bringt Snacks mit" />
           </label>
-          <label>Deadline
+          <label>Bis wann?
             <input id="betDeadline" type="date" required />
           </label>
-          <button class="primary-button" type="submit">Ab dafür <span>→</span></button>
+          <button class="primary-button" type="submit">Spiel eröffnen <span>→</span></button>
         </form>
       </section>
     </div>
