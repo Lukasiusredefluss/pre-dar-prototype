@@ -2,31 +2,34 @@ const people = [
   { name: "Lukas", initials: "LS", color: "#b8dd42", score: "6 Siege" },
   { name: "Mia", initials: "MI", color: "#ff9b82", score: "72% richtig" },
   { name: "Ben", initials: "BE", color: "#9c83ee", score: "8 verloren" },
-  { name: "Noah", initials: "NO", color: "#7fcfd0", score: "4 Challenges" },
+  { name: "Noah", initials: "NO", color: "#7fcfd0", score: "5 Dares" },
   { name: "Finn", initials: "FI", color: "#ffd45f", score: "5 Siege" },
   { name: "Emma", initials: "EM", color: "#ef9ec4", score: "67% richtig" }
 ];
 
 const seedBets = [
   { id: 1, type: "PRE", title: "Kommt Ben am Freitag wieder mehr als 15 Minuten zu spät?", target: "Ben", stake: "Bei JA bringt Ben nächstes Mal Snacks mit.", deadline: "2026-09-18", votes: { yes: 4, no: 1 }, voters: ["LS","MI","NO","FI","EM"], status: "active" },
-  { id: 2, type: "CHA", title: "Noah drückt bis Ende Oktober 120 kg auf der Bank.", target: "Noah", stake: "Wenn er es schafft, zahlen alle einen veganen Döner.", deadline: "2026-10-31", votes: { yes: 3, no: 2 }, voters: ["NO","LS","BE","MI"], status: "active" },
+  { id: 2, type: "DAR", title: "Noah tritt beim nächsten Spieleabend mit Zaubererhut an.", target: "Noah", stake: "Der Hut bleibt den ganzen Abend auf – ohne Ausreden.", deadline: "2026-10-31", votes: { yes: 3, no: 1 }, voters: ["NO","LS","BE","MI"], status: "active" },
   { id: 3, type: "DAR", title: "Wer beim Mario Kart als Letztes ins Ziel kommt …", target: "Alle", stake: "… schickt eine dramatische Entschuldigung als Sprachnachricht.", deadline: "2026-09-20", votes: { yes: 5, no: 0 }, voters: ["LS","MI","BE","NO","FI"], status: "active" },
   { id: 4, type: "PRE", title: "Schreibt Lukas die RE-Klausur besser als 2,0?", target: "Lukas", stake: "Der Verlierer plant den nächsten Spieleabend.", deadline: "2026-09-28", votes: { yes: 5, no: 1 }, voters: ["MI","BE","NO","FI","EM"], status: "active" },
   { id: 5, type: "DAR", title: "Beim Bowling verliert Ben mit mehr als 20 Punkten Abstand.", target: "Ben", stake: "Er erschien beim nächsten Treffen mit Krawatte.", deadline: "2026-08-29", votes: { yes: 4, no: 2 }, voters: ["LS","MI","BE","NO","FI","EM"], status: "done", result: "Eingelöst ✓" },
   { id: 6, type: "PRE", title: "Finn vergisst beim Campen mindestens eine wichtige Sache.", target: "Finn", stake: "Es war natürlich die Taschenlampe.", deadline: "2026-07-17", votes: { yes: 5, no: 1 }, voters: ["LS","MI","BE","NO"], status: "done", result: "JA · 5 richtig" }
 ];
 
-const colors = { PRE: "#ff6846", CHA: "#b8dd42", DAR: "#9c83ee" };
-const labels = { PRE: "Prediction", CHA: "Challenge", DAR: "Dare" };
+const colors = { PRE: "#ff6846", DAR: "#9c83ee" };
+const labels = { PRE: "Prediction", DAR: "Dare" };
 let bets = loadBets();
 let currentFilter = "ALL";
 let selectedType = "PRE";
 
 function loadBets() {
-  try { return JSON.parse(localStorage.getItem("prechadar-bets")) || structuredClone(seedBets); }
+  try {
+    const stored = JSON.parse(localStorage.getItem("predar-bets-v2"));
+    return stored?.filter(bet => bet.type === "PRE" || bet.type === "DAR") || structuredClone(seedBets);
+  }
   catch { return structuredClone(seedBets); }
 }
-function saveBets() { localStorage.setItem("prechadar-bets", JSON.stringify(bets)); }
+function saveBets() { localStorage.setItem("predar-bets-v2", JSON.stringify(bets)); }
 function formatDate(date) { return new Intl.DateTimeFormat("de-DE", { day: "2-digit", month: "short" }).format(new Date(date + "T12:00:00")); }
 function daysLeft(date) {
   const days = Math.ceil((new Date(date + "T23:59:59") - new Date()) / 86400000);
@@ -42,11 +45,11 @@ function betCard(bet) {
   const total = bet.votes.yes + bet.votes.no || 1;
   const percent = Math.round((bet.votes.yes / total) * 100);
   return `<article class="bet-card" data-id="${bet.id}" style="--accent:${colors[bet.type]}">
-    <div class="card-top"><span class="type-badge">${bet.type} · ${labels[bet.type]}</span><span class="time-left">${bet.status === "done" ? escapeHtml(bet.result || "Beendet") : daysLeft(bet.deadline)}</span></div>
+    <div class="card-top"><span class="type-badge">${labels[bet.type]}</span><span class="time-left">${bet.status === "done" ? escapeHtml(bet.result || "Beendet") : daysLeft(bet.deadline)}</span></div>
     <h3>${escapeHtml(bet.title)}</h3>
     <div class="stake"><i>◆</i><span>${escapeHtml(bet.stake)}</span></div>
     ${bet.type !== "DAR" ? `<div class="progress"><span style="width:${percent}%"></span></div>` : ""}
-    <div class="card-bottom"><div class="mini-avatars">${bet.voters.slice(0,4).map(avatarMarkup).join("")}${bet.voters.length > 4 ? `<span class="mini-avatar" style="background:#ded9cd">+${bet.voters.length-4}</span>` : ""}</div><span class="action-hint">${bet.status === "done" ? "Ansehen" : bet.type === "CHA" ? `${percent}% glauben dran` : bet.type === "PRE" ? `${percent}% sagen JA` : `${bet.voters.length} dabei`} →</span></div>
+    <div class="card-bottom"><div class="mini-avatars">${bet.voters.slice(0,4).map(avatarMarkup).join("")}${bet.voters.length > 4 ? `<span class="mini-avatar" style="background:#ded9cd">+${bet.voters.length-4}</span>` : ""}</div><span class="action-hint">${bet.status === "done" ? "Ansehen" : bet.type === "PRE" ? `${percent}% sagen JA` : `${bet.voters.length} dabei`} →</span></div>
   </article>`;
 }
 
@@ -68,7 +71,7 @@ function openDetail(id) {
   const bet = bets.find(b => b.id === id); if (!bet) return;
   const voted = bet.userVote;
   document.getElementById("detailContent").innerHTML = `<div style="--accent:${colors[bet.type]}">
-    <span class="detail-type">${bet.type} · ${labels[bet.type]}</span>
+    <span class="detail-type">${labels[bet.type]}</span>
     <h2 class="detail-title" id="detailTitle">${escapeHtml(bet.title)}</h2>
     <div class="detail-meta"><span class="meta-pill">◎ ${escapeHtml(bet.target)}</span><span class="meta-pill">◷ ${formatDate(bet.deadline)}</span><span class="meta-pill">♟ ${bet.voters.length} dabei</span></div>
     <div class="detail-stake"><small>ES GEHT UM</small><strong>${escapeHtml(bet.stake)}</strong></div>
@@ -96,7 +99,7 @@ function resolveBet(id) {
 }
 
 function shareText(text) {
-  if (navigator.share) navigator.share({ title: "PRE CHA DAR", text, url: location.href }).catch(() => {});
+  if (navigator.share) navigator.share({ title: "PRE DAR", text, url: location.href }).catch(() => {});
   else navigator.clipboard?.writeText(`${text}\n${location.href}`).then(() => toast("Link kopiert!"));
 }
 
@@ -109,13 +112,32 @@ document.querySelectorAll(".filter").forEach(button => button.addEventListener("
   document.querySelectorAll(".filter").forEach(f => f.classList.remove("active")); button.classList.add("active"); currentFilter = button.dataset.filter; render();
 }));
 document.getElementById("createButton").addEventListener("click", () => { document.getElementById("typeStep").classList.remove("hidden"); document.getElementById("betForm").classList.add("hidden"); openModal("createModal"); });
+document.querySelectorAll("[data-quick-type]").forEach(button => button.addEventListener("click", () => {
+  openCreateForm(button.dataset.quickType);
+}));
 document.querySelectorAll("[data-close]").forEach(button => button.addEventListener("click", () => closeModal(button.dataset.close)));
 document.querySelectorAll(".modal-backdrop").forEach(modal => modal.addEventListener("click", e => { if (e.target === modal) closeModal(modal.id); }));
 document.querySelectorAll(".type-option").forEach(option => option.addEventListener("click", () => {
-  selectedType = option.dataset.type; document.getElementById("typeStep").classList.add("hidden"); document.getElementById("betForm").classList.remove("hidden");
-  const badge = document.getElementById("formType"); badge.textContent = selectedType; badge.style.background = colors[selectedType]; document.getElementById("formHeading").textContent = `Neue ${labels[selectedType]}`;
-  document.getElementById("betTitle").placeholder = selectedType === "PRE" ? "Kommt Ben Freitag wieder zu spät?" : selectedType === "CHA" ? "Noah schafft bis Oktober 120 kg." : "Wer verliert, muss im Dialekt sprechen.";
+  openCreateForm(option.dataset.type);
 }));
+
+function openCreateForm(type) {
+  selectedType = type;
+  const isPrediction = type === "PRE";
+  document.getElementById("typeStep").classList.add("hidden");
+  document.getElementById("betForm").classList.remove("hidden");
+  const badge = document.getElementById("formType");
+  badge.textContent = labels[type].toUpperCase();
+  badge.style.background = colors[type];
+  document.getElementById("formHeading").textContent = `Neue ${labels[type]}`;
+  document.getElementById("formHelper").textContent = isPrediction ? "Stellt eine Frage, die alle mit Ja oder Nein beantworten können." : "Legt eindeutig fest, wer was tun muss – dann kann es keine Ausreden geben.";
+  document.getElementById("titleLabel").childNodes[0].textContent = isPrediction ? "Was wollt ihr vorhersagen?\n            " : "Was ist der Dare?\n            ";
+  document.getElementById("targetLabel").childNodes[0].textContent = isPrediction ? "Wen betrifft es?\n            " : "Wer muss ran?\n            ";
+  document.getElementById("stakeLabel").childNodes[0].textContent = isPrediction ? "Was bekommt die richtige Seite?\n            " : "Welche Regel oder Konsequenz gilt?\n            ";
+  document.getElementById("betTitle").placeholder = isPrediction ? "Kommt Ben Freitag wieder zu spät?" : "Beim Spieleabend Karaoke singen";
+  document.getElementById("betStake").placeholder = isPrediction ? "Verlierer bringt Snacks mit" : "Das Lied bestimmt die Gruppe";
+  openModal("createModal");
+}
 document.getElementById("backToTypes").addEventListener("click", () => { document.getElementById("typeStep").classList.remove("hidden"); document.getElementById("betForm").classList.add("hidden"); });
 document.getElementById("betForm").addEventListener("submit", event => {
   event.preventDefault();
@@ -123,8 +145,8 @@ document.getElementById("betForm").addEventListener("submit", event => {
   saveBets(); render(); event.target.reset(); closeModal("createModal"); toast(`${selectedType} ist eröffnet!`);
 });
 document.getElementById("randomButton").addEventListener("click", () => { const active = bets.filter(b => b.status === "active"); if (active.length) openDetail(active[Math.floor(Math.random()*active.length)].id); });
-document.getElementById("shareButton").addEventListener("click", () => shareText("Komm in unsere Gruppe „Die Idioten“ und teste PRE CHA DAR."));
-document.getElementById("resetButton").addEventListener("click", () => { localStorage.removeItem("prechadar-bets"); bets = structuredClone(seedBets); render(); toast("Testdaten sind wieder frisch."); });
+document.getElementById("shareButton").addEventListener("click", () => shareText("Komm in unsere Gruppe „Die Idioten“ und teste PRE DAR."));
+document.getElementById("resetButton").addEventListener("click", () => { localStorage.removeItem("predar-bets-v2"); localStorage.removeItem("prechadar-bets"); bets = structuredClone(seedBets); render(); toast("Testdaten sind wieder frisch."); });
 document.getElementById("moreButton").addEventListener("click", () => toast("Mehr Chaos kommt nach eurem Test 😈"));
 document.getElementById("profileButton").addEventListener("click", () => toast("Du testest als Lukas."));
 document.getElementById("groupButton").addEventListener("click", () => document.querySelector('[data-view="groupView"]').click());
