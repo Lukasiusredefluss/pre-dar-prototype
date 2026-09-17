@@ -1,5 +1,6 @@
 name: Deploy to GitHub Pages
 
+# Re-run deployment after repository visibility was restored.
 on:
   push:
     branches: [main]
