@@ -1,10 +1,9 @@
-# PRE CHA DAR
+# PRE DAR
 
 Ein mobiler UX-Prototyp für absurde Freundeswetten:
 
 - **PRE** – Vorhersagen über das, was passieren wird
-- **CHA** – Challenges, bei denen jemand etwas schaffen muss
-- **DAR** – Dares, bei denen die Konsequenz im Mittelpunkt steht
+- **DAR** – Aufgaben und Konsequenzen, die jemand annehmen muss
 
 ## Testumfang
 
