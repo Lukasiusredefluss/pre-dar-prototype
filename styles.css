@@ -5,7 +5,6 @@
   --muted: #77746b;
   --line: #dcd7ca;
   --pre: #ff6846;
-  --cha: #b8dd42;
   --dar: #9c83ee;
   --shadow: 0 18px 45px rgba(23, 22, 17, .12);
 }
@@ -23,18 +22,25 @@ button { color: inherit; }
 .group-switch small { color: var(--muted); font-size: 9px; letter-spacing: .16em; font-weight: 700; }
 .group-switch strong { font-size: 14px; }
 .chevron { color: var(--muted); }
-.avatar { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--ink); background: var(--cha); font-weight: 800; cursor: pointer; }
+.avatar { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--ink); background: #ffd45f; font-weight: 800; cursor: pointer; }
 main { padding: 0 20px; }
 .view { display: none; animation: viewIn .25s ease; }
 .view.active { display: block; }
 @keyframes viewIn { from { opacity: 0; transform: translateY(6px); } }
-.hero { padding: 27px 2px 20px; }
+.hero { padding: 24px 2px 18px; }
 .hero.compact { padding-top: 30px; }
 .eyebrow { margin: 0 0 11px; letter-spacing: .18em; font-size: 10px; font-weight: 800; color: var(--muted); }
 h1, h2, p { margin-top: 0; }
-h1 { font: 700 clamp(42px, 12vw, 59px)/.96 "Space Grotesk", sans-serif; letter-spacing: -.055em; margin-bottom: 14px; }
+h1 { font: 700 clamp(39px, 10.5vw, 55px)/.98 "Space Grotesk", sans-serif; letter-spacing: -.055em; margin-bottom: 14px; }
 h1 em { font-style: normal; color: var(--pre); }
 .hero-copy { color: var(--muted); font-size: 15px; }
+.mode-guide { display: grid; gap: 9px; margin: 3px 0 16px; }
+.guide-card { width: 100%; border: 1px solid var(--line); border-radius: 20px; padding: 13px 14px; display: flex; align-items: center; gap: 12px; text-align: left; cursor: pointer; box-shadow: 0 7px 18px rgba(23,22,17,.05); transition: transform .15s, box-shadow .15s; }
+.guide-card:active { transform: scale(.985); }
+.guide-card.prediction { background: #fff1eb; }.guide-card.dare { background: #f2edff; }
+.guide-icon { width: 42px; height: 42px; border-radius: 14px; display: grid; place-items: center; color: white; font: 800 22px "Space Grotesk"; flex: 0 0 auto; }
+.prediction .guide-icon { background: var(--pre); }.dare .guide-icon { background: var(--dar); }
+.guide-card > span:nth-child(2) { flex: 1; }.guide-card small, .guide-card strong, .guide-card em { display: block; }.guide-card small { font: 800 9px "Space Grotesk"; letter-spacing: .13em; color: var(--muted); }.guide-card strong { font: 700 15px "Space Grotesk"; margin: 1px 0; }.guide-card em { font-style: normal; color: var(--muted); font-size: 10px; }.guide-card b { font-size: 20px; }
 .stats { display: grid; grid-template-columns: repeat(3, 1fr); background: var(--ink); color: white; border-radius: 20px; padding: 18px 8px; box-shadow: var(--shadow); }
 .stats div { text-align: center; border-right: 1px solid #44423b; }
 .stats div:last-child { border-right: 0; }
@@ -49,7 +55,7 @@ h1 em { font-style: normal; color: var(--pre); }
 .filter { border: 1px solid var(--line); background: transparent; border-radius: 99px; padding: 8px 13px; font-size: 11px; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 6px; }
 .filter.active { background: var(--ink); border-color: var(--ink); color: white; }
 .dot { width: 7px; height: 7px; border-radius: 50%; }
-.dot.pre { background: var(--pre); }.dot.cha { background: var(--cha); }.dot.dar { background: var(--dar); }
+.dot.pre { background: var(--pre); }.dot.dar { background: var(--dar); }
 .card-list { display: grid; gap: 12px; }
 .bet-card { border: 1px solid var(--line); background: var(--card); border-radius: 22px; padding: 17px; text-align: left; cursor: pointer; position: relative; overflow: hidden; transition: transform .15s, box-shadow .15s; }
 .bet-card:active { transform: scale(.985); }
@@ -79,8 +85,8 @@ h1 em { font-style: normal; color: var(--pre); }
 .bottom-nav { position: fixed; z-index: 20; bottom: 0; left: 50%; transform: translateX(-50%); width: min(520px, 100%); height: calc(76px + env(safe-area-inset-bottom)); padding: 8px 18px env(safe-area-inset-bottom); background: rgba(255,253,247,.94); backdrop-filter: blur(16px); border-top: 1px solid var(--line); display: grid; grid-template-columns: repeat(5,1fr); }
 .nav-item { border: 0; background: transparent; color: #969187; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; font-size: 9px; font-weight: 700; cursor: pointer; }
 .nav-item span { font-size: 19px; height: 24px; }.nav-item.active { color: var(--ink); }.nav-gap { display: block; }
-.fab { position: fixed; z-index: 25; bottom: calc(42px + env(safe-area-inset-bottom)); left: 50%; transform: translate(-50%,50%); width: 61px; height: 61px; border-radius: 20px; border: 5px solid var(--paper); background: var(--pre); box-shadow: 0 10px 25px rgba(255,104,70,.38); cursor: pointer; }
-.fab span { display: block; color: white; font-size: 34px; line-height: 44px; transition: transform .2s; }.fab:active span { transform: rotate(45deg); }
+.fab { position: fixed; z-index: 25; bottom: calc(42px + env(safe-area-inset-bottom)); left: 50%; transform: translate(-50%,50%); width: 68px; height: 68px; border-radius: 22px; border: 5px solid var(--paper); background: var(--pre); color: white; box-shadow: 0 10px 25px rgba(255,104,70,.38); cursor: pointer; display: grid; place-content: center; gap: 0; }
+.fab span { display: block; font-size: 31px; line-height: 27px; transition: transform .2s; }.fab small { font-size: 8px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; }.fab:active span { transform: rotate(45deg); }
 .modal-backdrop { display: none; position: fixed; z-index: 50; inset: 0; background: rgba(23,22,17,.55); backdrop-filter: blur(4px); align-items: flex-end; justify-content: center; }
 .modal-backdrop.open { display: flex; animation: fadeIn .2s ease; }
 @keyframes fadeIn { from { opacity: 0; } }
@@ -91,8 +97,9 @@ h1 em { font-style: normal; color: var(--pre); }
 .sheet h2 { font: 700 30px "Space Grotesk"; letter-spacing: -.04em; margin-bottom: 7px; }.sheet-copy { color: var(--muted); font-size: 13px; margin-bottom: 22px; }
 .type-options { display: grid; gap: 10px; }
 .type-option { border: 1px solid var(--line); background: var(--card); border-radius: 19px; padding: 14px; display: flex; align-items: center; gap: 14px; text-align: left; cursor: pointer; }
-.type-option > span { width: 52px; height: 52px; border-radius: 16px; display: grid; place-items: center; font: 800 13px "Space Grotesk"; }.pre-option > span { background: var(--pre); }.cha-option > span { background: var(--cha); }.dar-option > span { background: var(--dar); }.type-option div { flex:1; }.type-option strong, .type-option small { display:block; }.type-option strong { font: 700 16px "Space Grotesk"; }.type-option small { color: var(--muted); font-size: 11px; margin-top: 2px; }.type-option b { font-size: 20px; }
+.type-option > span { width: 54px; height: 54px; border-radius: 16px; display: grid; place-items: center; color: white; font: 800 24px "Space Grotesk"; }.pre-option > span { background: var(--pre); }.dar-option > span { background: var(--dar); }.type-option div { flex:1; }.type-option strong, .type-option small, .type-option em { display:block; }.type-option strong { font: 700 17px "Space Grotesk"; }.type-option small { color: var(--muted); font-size: 11px; margin-top: 2px; }.type-option em { color: var(--ink); font-style: normal; font-size: 10px; margin-top: 5px; }.type-option b { font-size: 20px; }
 .hidden { display: none !important; }.back-button { border: 0; padding: 0; background: transparent; color: var(--muted); font-size: 11px; font-weight: 700; margin-bottom: 17px; cursor: pointer; }.form-type { display: inline-block; padding: 6px 9px; border-radius: 8px; background: var(--pre); font: 800 10px "Space Grotesk"; letter-spacing: .1em; margin-bottom: 9px; }
+.form-helper { color: var(--muted); font-size: 12px; line-height: 1.45; margin: -1px 0 17px; }
 form label { display: block; font-size: 11px; font-weight: 800; margin-top: 15px; }
 input, textarea, select { display: block; width: 100%; border: 1px solid var(--line); border-radius: 13px; background: var(--card); color: var(--ink); padding: 13px; margin-top: 7px; outline: none; font-size: 14px; }
 textarea { min-height: 84px; resize: vertical; } input:focus, textarea:focus, select:focus { border-color: var(--ink); box-shadow: 0 0 0 2px rgba(23,22,17,.08); }
