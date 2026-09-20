@@ -5,6 +5,10 @@ Ein mobiler UX-Prototyp für absurde Freundeswetten:
 - **PRE** – Vorhersagen über das, was passieren wird
 - **DAR** – Aufgaben und Konsequenzen, die jemand annehmen muss
 
+## Live-Prototyp
+
+https://lukasiusredefluss.github.io/pre-dar-prototype/
+
 ## Testumfang
 
 Der Prototyp enthält eine Beispielgruppe, aktive Spiele, Abstimmungen, das Erstellen und Auflösen eigener Spiele, eine Chronik und einen teilbaren Einladungslink. Es gibt bewusst noch kein Backend und keine Accounts. Änderungen landen nur im `localStorage` des jeweiligen Browsers und werden nicht zwischen Testern synchronisiert.
